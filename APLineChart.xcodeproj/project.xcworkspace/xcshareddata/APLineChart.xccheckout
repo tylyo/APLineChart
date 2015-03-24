@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>6B1F1D3D-434F-48CD-9C3A-7C9CF9C6F8A7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>APLineChart</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BA8F47183C2A1D76747C58A97727B5F2D64B5EB7</key>
+		<string>https://github.com/tylyo/APLineChart.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>APLineChart.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BA8F47183C2A1D76747C58A97727B5F2D64B5EB7</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/tylyo/APLineChart.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BA8F47183C2A1D76747C58A97727B5F2D64B5EB7</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BA8F47183C2A1D76747C58A97727B5F2D64B5EB7</string>
+			<key>IDESourceControlWCCName</key>
+			<string>APLineChart</string>
+		</dict>
+	</array>
+</dict>
+</plist>
