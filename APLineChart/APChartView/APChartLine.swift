@@ -28,7 +28,6 @@ class APChartLine  {
         self.dots = points
     }
     init(chartView:APChartView, title:String, lineWidth:CGFloat, lineColor:UIColor) {
-//        super.init()
         self.chart = chartView
         self.title = title
         self.lineWidth = lineWidth
@@ -60,7 +59,7 @@ class APChartLine  {
     
     func drawLine() -> CAShapeLayer? {
         //        let currentLine = linesDataStore[lineIndex]
-         println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
+//         println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
         
 
         var bpath = UIBezierPath()
@@ -94,13 +93,11 @@ class APChartLine  {
         layer.fillColor = nil
         layer.lineWidth = lineWidth
 
-        println("lineLayerStore animation")
         var animation = CABasicAnimation(keyPath: "strokeEnd")
             animation.duration = 1.0
             animation.fromValue = 0
             animation.toValue = 1
             layer.addAnimation(animation, forKey: "strokeEnd")
-        println("lineLayerStore animation end")
     
         return layer
     }
@@ -118,10 +115,7 @@ class APChartLine  {
     * Fill area between line chart and x-axis.
     */
     func drawAreaBeneathLineChart() {
-        println("drawAreaBeneathLineChart")
-        println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
-        
-        
+
         var bpath = UIBezierPath()
         bpath.moveToPoint(CGPoint(x: dots[0].point.x, y: chart.pointZero.y))
         for dot in dots {
@@ -162,13 +156,12 @@ class APChartLine  {
         layer.lineWidth = 1.0
         layer.lineDashPattern = [6,2,8,2]
         
-        println("lineLayerStore animation")
         var animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = 1.0
         animation.fromValue = 0
         animation.toValue = 1
         layer.addAnimation(animation, forKey: "strokeEnd")
-        println("lineLayerStore animation end")
+
         var lblMean = UILabel(frame: CGRect(origin: CGPoint(x: chart.drawingArea.origin.x, y: meanCoord), size: chart.labelAxesSize))
         lblMean.font = UIFont.italicSystemFontOfSize(10.0)
         lblMean.textAlignment = .Left
@@ -201,14 +194,12 @@ class APChartLine  {
         layer.fillColor = nil
         layer.lineWidth = 1.0
         layer.lineDashPattern = [6,2]
-        
-        println("lineLayerStore animation")
+//        
         var animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = 1.0
         animation.fromValue = 0
         animation.toValue = 1
         layer.addAnimation(animation, forKey: "strokeEnd")
-        println("lineLayerStore animation end")
         var lblMean = UILabel(frame: CGRect(origin: CGPoint(x: chart.drawingArea.origin.x, y: meanCoord), size: chart.labelAxesSize))
         lblMean.font = UIFont.italicSystemFontOfSize(10.0)
         lblMean.textAlignment = .Left
