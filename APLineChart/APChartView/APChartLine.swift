@@ -22,13 +22,7 @@ class APChartLine  {
     var showMeanValueProgressive:Bool = false
     var meanCoordsProgressive:[CGFloat] = []
 
-    var showMaxValue:Bool = false
-    var maxValue:CGFloat = 0.0
-    var maxCoord:CGFloat = 0.0
-
-    
     init(chartView:APChartView, title:String, points:[APChartPoint]) {
-//        super.init()
         self.chart = chartView
         self.title = title
         self.dots = points
@@ -66,7 +60,7 @@ class APChartLine  {
     
     func drawLine() -> CAShapeLayer? {
         //        let currentLine = linesDataStore[lineIndex]
-        println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
+         println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
         
 
         var bpath = UIBezierPath()
@@ -182,6 +176,7 @@ class APChartLine  {
         lblMean.textColor = lineColor
         chart.addSubview(lblMean)
         chart.layer.addSublayer(layer)
+        chart.lineLayerStore.append(layer)
         
     }
     
@@ -221,7 +216,8 @@ class APChartLine  {
         lblMean.textColor = lineColor
         chart.addSubview(lblMean)
         chart.layer.addSublayer(layer)
-        
+        chart.lineLayerStore.append(layer)
+
     }
 
 }

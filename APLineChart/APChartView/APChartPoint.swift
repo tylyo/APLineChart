@@ -22,25 +22,23 @@ class APChartPoint {
 
     required init(_ dot: CGPoint){
         self.dot = dot
-//        println("created: \(dot)")
     }
     
     func updatePoint  (factor:CGPoint, offset:CGPoint ) -> APChartPoint{
         
         self.point = CGPoint( x: offset.x + (dot.x  * factor.x), y: -dot.y * factor.y + offset.y)
-        println("updatePoint: \(dot) -> \(point) = x\(factor), off:\(offset)")
         return self
     }
 
     /**
-    * Draw small dot at every data point.
+    * Draw dot at every data point.
     */
     func drawDot(bgColor:UIColor) -> CALayer{
         
-            var xValue = point.x - outerRadius/2
-            var yValue = point.y - outerRadius/2
-            
-            // draw custom layer with another layer in the center
+        var xValue = point.x - outerRadius/2
+        var yValue = point.y - outerRadius/2
+        
+        // draw custom layer with another layer in the center
         var dotLayer = CALayer()
         dotLayer.backgroundColor = bgColor.CGColor
         dotLayer.cornerRadius = outerRadius / 2
@@ -56,11 +54,11 @@ class APChartPoint {
         dotLayer.addSublayer(dotLayerInner)
         
         // animate opacity
-                var animation = CABasicAnimation(keyPath: "opacity")
-                animation.duration = 0.8
-                animation.fromValue = 0
-                animation.toValue = 1
-                dotLayer.addAnimation(animation, forKey: "opacity")
+        var animation = CABasicAnimation(keyPath: "opacity")
+        animation.duration = 0.8
+        animation.fromValue = 0
+        animation.toValue = 1
+        dotLayer.addAnimation(animation, forKey: "opacity")
         
         return dotLayer
     }

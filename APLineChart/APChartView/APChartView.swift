@@ -11,7 +11,7 @@ import QuartzCore
 
 // delegate method
  protocol APChartViewDelegate {
-    func didSelectDataPoint(selectedDots:[String:APChartPoint])
+    func didSelectNearDataPoint(selectedDots:[String:APChartPoint])
 }
 
 
@@ -22,67 +22,36 @@ import QuartzCore
     let labelAxesSize:CGSize = CGSize(width: 35.0, height: 20.0)
     var lineLayerStore: [CALayer] = []
 
-    // default configuration
-
-    /* MARK oook
-    */
     @IBInspectable var axesVisible:Bool = true
-    @IBInspectable var titleForX:String = "x"
-    @IBInspectable var titleForY:String = "y"
+    @IBInspectable var titleForX:String = "x axis"
+    @IBInspectable var titleForY:String = "y axis"
+    @IBInspectable var axesColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
+    @IBInspectable var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
+    @IBInspectable var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
+
+    @IBInspectable var gridVisible:Bool = false
+    @IBInspectable var gridColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1)
+    @IBInspectable var gridLinesX: CGFloat = 5.0
+    @IBInspectable var gridLinesY: CGFloat = 5.0
+    @IBInspectable var labelsXVisible:Bool = false
+    @IBInspectable var labelsYVisible:Bool = false
+
+    @IBInspectable var dotsVisible:Bool = false
+    @IBInspectable var dotsBackgroundColor:UIColor = UIColor.whiteColor()
+    @IBInspectable var areaUnderLinesVisible:Bool = true
+    
+    var animationEnabled = true
+    @IBInspectable var showMean:Bool = false
+    @IBInspectable var showMeanProgressive:Bool = false
+    
     var marginBottom:CGFloat = 50.0
     lazy var marginLeft:CGFloat = {
         return self.labelAxesSize.width + self.labelAxesSize.height
         }()
     var marginTop:CGFloat = 25
     var marginRight:CGFloat = 25
-    // #607d8b
-    @IBInspectable var axesColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
-    // #f69988
-    @IBInspectable var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
-    // #72d572
-    @IBInspectable var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
-
-    
-    @IBInspectable var gridVisible:Bool = false
-    @IBInspectable var labelsXVisible:Bool = false
-    @IBInspectable var labelsYVisible:Bool = false
-    @IBInspectable var GridLinesX: CGFloat = 5.0
-    @IBInspectable var GridLinesY: CGFloat = 5.0
-    // #eeeeee
-    @IBInspectable var gridColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1)
-
-    
-    @IBInspectable var dotsVisible:Bool = false
-    @IBInspectable var dotsBackgroundColor:UIColor = UIColor.whiteColor()
-    @IBInspectable var areaUnderLinesVisible:Bool = true
-    
-    var animationEnabled = true
-    @IBInspectable var showMean:Bool = false {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    @IBInspectable var showMeanProgressive:Bool = false {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    
-    @IBInspectable var showMax:Bool = false {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    @IBInspectable var showMin:Bool = false {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
     var animationDuration: CFTimeInterval = 1
 
-//    @IBInspectable var areaBetweenLines = [-1, -1]
-        
-    
     let colors: [UIColor] = [
         UIColor.fromHex(0x1f77b4),
         UIColor.fromHex(0xff7f0e),
@@ -100,15 +69,13 @@ import QuartzCore
     var offsetX: Offset = Offset(min:0.0, max:1.0)
     var offsetY: Offset = Offset(min:0.0, max:1.0)
     
-//    var basePoint:CGPoint = CGPoint(x: 0.0, y: 0.0)
+    var drawingArea:CGRect  = CGRectZero
+    var pointBase:CGPoint = CGPointZero
     var pointZero:CGPoint {
         get {
             return drawingArea.origin
         }
     }
-    var pointBase:CGPoint = CGPoint(x: 0.0, y: 0.0)
-    var drawingArea:CGRect  = CGRectZero
-
     var selectetedXlayer:CAShapeLayer? = nil
     
     var removeAll: Bool = false
@@ -179,7 +146,6 @@ import QuartzCore
             
             lineData.showMeanValue = showMean
             lineData.showMeanValueProgressive = showMeanProgressive
-            lineData.showMaxValue = showMax
 
             if let layer = lineData.drawLine() {
                 self.layer.addSublayer(layer)
@@ -241,12 +207,12 @@ import QuartzCore
         var height = self.bounds.height
         var width = self.bounds.width
         
-        var space = drawingArea.width / GridLinesX
+        var space = drawingArea.width / gridLinesX
         var context = UIGraphicsGetCurrentContext()
         CGContextSetStrokeColorWithColor(context, gridColor.CGColor)
         var x:CGFloat = drawingArea.origin.x;
         var step:CGFloat = 0.0
-        while step++ < GridLinesX {
+        while step++ < gridLinesX {
             x +=  space
             CGContextMoveToPoint(context, x,  drawingArea.origin.y)
             CGContextAddLineToPoint(context, x , drawingArea.origin.y - drawingArea.height)
@@ -261,12 +227,12 @@ import QuartzCore
     */
     func drawYGrid() {
         
-        var delta_h = drawingArea.height  / GridLinesY
+        var delta_h = drawingArea.height  / gridLinesY
         var context = UIGraphicsGetCurrentContext()
         var y:CGFloat = drawingArea.origin.y
         var step:CGFloat = 0.0
-        while step++ < GridLinesY {
-            println("drawYGrid: \(step) \(y) -> \(y-delta_h)")
+        while step++ < gridLinesY {
+//              println("drawYGrid: \(step) \(y) -> \(y-delta_h)")
             y -= delta_h
             CGContextMoveToPoint( context, drawingArea.origin.x, y )
             CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width, y)
@@ -332,15 +298,9 @@ import QuartzCore
         offsetY = Offset(min:10000.0, max:1.0)
         
         for line in collectionLines {
-            println("calculateOffsets: \(line.title) [\(line.dots.count)]")
-
             for curr:APChartPoint in line.dots {
-                
-                println("calculateOffsets point:: \(curr.dot)")
-                
                 offsetX.updateMinMax(curr.dot.x)
                 offsetY.updateMinMax(curr.dot.y)
-                
             }
         }
         
@@ -355,8 +315,7 @@ import QuartzCore
         if y > 0.0 && y < offsetY.min {
             offsetY.min -= 2*y
         }
-        println("Offsets result X: \(offsetX.min) \(offsetX.max)")
-        println("Offsets result Y: \(offsetY.min) \(offsetY.max)")
+
     }
     
     func updateLinesDataStoreScaled() {
@@ -364,21 +323,12 @@ import QuartzCore
         var x_factor = drawingArea.width / ( offsetX.max) // - pointZero.x )
         var y_factor = drawingArea.height /  offsetY.delta()
         var factorPoint = CGPoint(x: x_factor, y: y_factor)
-        println("pointZero \(pointZero) => (x: \(pointZero.x) , y: \(pointZero.y+offsetY.min*y_factor)")
 
         pointBase = CGPoint(x: pointZero.x-offsetX.min*x_factor , y: pointZero.y+offsetY.min*y_factor)
-        println("updateLinesDataStoreScaled  factor \(drawingArea.width) / \(( offsetX.max  )) =>  \(x_factor)")
-        println("updateLinesDataStoreScaled  factor (\(x_factor),\(y_factor)), \(collectionLines.count), p0: \(pointZero))")
         for line in collectionLines {
              line.updatePoints( factorPoint, offset: pointBase )
         }
             
-        
-        
-//        var x = linesCollection[0]
-//        println("updateLinesDataStoreScaled \(x[0].x) -> \(x[0].point.x) ")
-//        
-        println("updateLinesDataStoreScaled end ")
     }
 
     /**
@@ -399,21 +349,19 @@ import QuartzCore
             self.addSubview(label)
         }
         
-        var delta = drawingArea.width  / GridLinesX
-        var xValue_delta = offsetX.max  / GridLinesX
+        var delta = drawingArea.width  / gridLinesX
+        var xValue_delta = offsetX.max  / gridLinesX
         var x:CGFloat = pointZero.x
         var step:CGFloat = 0.0
-        while step++ < GridLinesX {
-            println("drawXGrid: \(step) \(x), \(xValue_delta*step) -> \(x+delta)")
+        while step++ < gridLinesX {
             x += delta
             
             var label = UILabel(frame: CGRect(x: x-12.0, y: pointZero.y+12.0, width: pointZero.x-4.0-16.0, height: 16.0))
-//            label.backgroundColor = UIColor(red: 0.5, green: 0.3, blue: 0.9, alpha: 0.7)
             label.font = UIFont.systemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Left
             label.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * 7 / 18)
-
             label.text = "\(Int(xValue_delta*step))"
+
             self.addSubview(label)
         }
 
@@ -429,38 +377,32 @@ import QuartzCore
         
         if (offsetY.min > 0 ) {
             var label = UILabel(frame: CGRect(x: 18.0, y:  pointZero.y-16.0, width: pointZero.x-4.0-16.0, height: 16.0))
-//            label.backgroundColor = UIColor.greenColor()
             label.font = UIFont.systemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Right
             label.text = "\(Int(offsetY.min))"
+
             self.addSubview(label)
         }
         
-        var delta_h = drawingArea.height  / GridLinesY
-        var yValue_delta = offsetY.delta()  / GridLinesY
+        var delta_h = drawingArea.height  / gridLinesY
+        var yValue_delta = offsetY.delta()  / gridLinesY
         var y:CGFloat = pointZero.y
         var step:CGFloat = 0.0
-        while step++ < GridLinesY {
-            println("drawYGrid: \(step) \(y) -> \(y-delta_h)")
+        while step++ < gridLinesY {
             y -= delta_h
             
             var label = UILabel(frame: CGRect(x: 18.0, y: y-8.0, width: pointZero.x-4.0-16.0, height: 16.0))
-//            label.backgroundColor = UIColor.greenColor()
             label.font = UIFont.systemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Right
             label.text = "\(Int(yValue_delta*step+offsetY.min))"
-            self.addSubview(label)
             
+            self.addSubview(label)
             
         }
     }
     
     
     func getClosetLineDot(selectedPoint:CGPoint) -> [String:APChartPoint]?{
-        println("\(drawingArea)")
-//        var selectedPoint2 = CGPoint(x: selectedPoint.x - pointBase.x, y: pointBase.y - selectedPoint.y)
-        println("getClosetLineDot \(selectedPoint)")
-//        println("getClosetLineDot \(selectedPoint2)")
         var delta:CGFloat = 100000.0
         var diff:CGFloat = 0.0
         var selectedDot:[String:APChartPoint] = [:]
@@ -470,16 +412,13 @@ import QuartzCore
                 dot.backgroundColor = dotsBackgroundColor
                 
                 diff  =  selectedPoint.distanceXFrom(dot.point)
-                println("-Dot \(index) - \(selectedPoint) \(dot.point)  \(dot.dot.y): \(diff)")
                 if (delta > diff){
                     selectedDot[line.title] = dot
-                    println("near \(index) - \(dot.point): \(diff)")
                     delta = diff
                 }
             }
         }
         for (lineTitle, dot) in selectedDot {
-            println("near - \(lineTitle )\(dot.point) \(dot.dot)")
             dot.backgroundColor = dotsBackgroundColor.lighterColorForColor()
         }
         return selectedDot
@@ -511,7 +450,7 @@ import QuartzCore
 
         
         if let closestDots = getClosetLineDot(selectedPoint) {
-            delegate?.didSelectDataPoint(closestDots)            
+            delegate?.didSelectNearDataPoint(closestDots)
         }
         
     }
