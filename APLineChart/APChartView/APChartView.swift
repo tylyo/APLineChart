@@ -22,21 +22,21 @@ import QuartzCore
     let labelAxesSize:CGSize = CGSize(width: 35.0, height: 20.0)
     var lineLayerStore: [CALayer] = []
 
-    @IBInspectable var axesVisible:Bool = true
+    @IBInspectable var showAxes:Bool = true
     @IBInspectable var titleForX:String = "x axis"
     @IBInspectable var titleForY:String = "y axis"
     @IBInspectable var axesColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
-    @IBInspectable var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
-    @IBInspectable var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
+//    @IBInspectable var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
+//    @IBInspectable var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
 
-    @IBInspectable var gridVisible:Bool = false
+    @IBInspectable var showGrid:Bool = false
     @IBInspectable var gridColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1)
     @IBInspectable var gridLinesX: CGFloat = 5.0
     @IBInspectable var gridLinesY: CGFloat = 5.0
-    @IBInspectable var labelsXVisible:Bool = false
-    @IBInspectable var labelsYVisible:Bool = false
+    @IBInspectable var showLabelsX:Bool = false
+    @IBInspectable var showLabelsY:Bool = false
 
-    @IBInspectable var dotsVisible:Bool = false
+    @IBInspectable var showDots:Bool = false
     @IBInspectable var dotsBackgroundColor:UIColor = UIColor.whiteColor()
     @IBInspectable var areaUnderLinesVisible:Bool = true
     
@@ -72,9 +72,7 @@ import QuartzCore
     var drawingArea:CGRect  = CGRectZero
     var pointBase:CGPoint = CGPointZero
     var pointZero:CGPoint {
-        get {
             return drawingArea.origin
-        }
     }
     var selectetedXlayer:CAShapeLayer? = nil
     
@@ -157,7 +155,7 @@ import QuartzCore
 
             
             // draw dots
-            if dotsVisible {
+            if showDots {
                 if let dotsLayer = lineData.drawDots(dotsBackgroundColor) {
                     for ll in dotsLayer {
                         self.layer.addSublayer(ll)
@@ -177,11 +175,11 @@ import QuartzCore
     func updateDrawingArea(){
         drawingArea = CGRect(x: marginLeft, y: self.bounds.height-marginBottom, width: self.bounds.width  - marginLeft - marginRight, height: self.bounds.height - marginTop  - marginBottom)
         
-        if !labelsXVisible {
+        if !showLabelsX {
             drawingArea.origin.y = self.bounds.height-self.labelAxesSize.height
             drawingArea.size.height = self.bounds.height - self.labelAxesSize.height - marginTop
         }
-        if !labelsYVisible {
+        if !showLabelsY {
             drawingArea.origin.x = self.labelAxesSize.height
             drawingArea.size.width = self.bounds.width - self.labelAxesSize.height - marginRight
         }
@@ -192,7 +190,7 @@ import QuartzCore
     * Draw grid.
     */
     func drawGrid() {
-        if !gridVisible {
+        if !showGrid {
             return
         }
         drawXGrid()
@@ -245,7 +243,7 @@ import QuartzCore
     * Draw x and y axis.
     */
     func drawAxes() {
-        if (!axesVisible){
+        if (!showAxes){
             return
         }
         var height = self.bounds.height
@@ -335,7 +333,7 @@ import QuartzCore
     * Draw x labels.
     */
     func drawXLabels() {
-        if !labelsXVisible {
+        if !showLabelsX {
            return
         }
         if (offsetX.min > 0 ){
@@ -371,7 +369,7 @@ import QuartzCore
     * Draw y labels.
     */
     func drawYLabels() {
-        if !labelsYVisible{
+        if !showLabelsY{
             return
         }
         

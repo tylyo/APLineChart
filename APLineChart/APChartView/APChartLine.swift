@@ -14,7 +14,6 @@ class APChartLine  {
     var title:String = "line"
     var lineColor:UIColor = UIColor.blackColor()
     var lineWidth:CGFloat = 2.0
-    var dotsVisible:Bool = true
     var showMeanValue:Bool = false
     var meanValue:CGFloat = 0.0
     var meanCoord:CGFloat = 0.0
