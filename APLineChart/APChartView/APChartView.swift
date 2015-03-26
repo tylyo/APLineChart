@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 // delegate method
- protocol APChartViewDelegate {
+protocol APChartViewDelegate {
     func didSelectNearDataPoint(selectedDots:[String:APChartPoint])
 }
 
@@ -18,24 +18,24 @@ import QuartzCore
 @IBDesignable class APChartView:UIView{
     var collectionLines:[APChartLine] = []
     var delegate: APChartViewDelegate!
-
+    
     let labelAxesSize:CGSize = CGSize(width: 35.0, height: 20.0)
     var lineLayerStore: [CALayer] = []
-
+    
     @IBInspectable var showAxes:Bool = true
     @IBInspectable var titleForX:String = "x axis"
     @IBInspectable var titleForY:String = "y axis"
     @IBInspectable var axesColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
-//    @IBInspectable var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
-//    @IBInspectable var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
-
+    //    @IBInspectable var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
+    //    @IBInspectable var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
+    
     @IBInspectable var showGrid:Bool = false
     @IBInspectable var gridColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1)
     @IBInspectable var gridLinesX: CGFloat = 5.0
     @IBInspectable var gridLinesY: CGFloat = 5.0
     @IBInspectable var showLabelsX:Bool = false
     @IBInspectable var showLabelsY:Bool = false
-
+    
     @IBInspectable var showDots:Bool = false
     @IBInspectable var dotsBackgroundColor:UIColor = UIColor.whiteColor()
     @IBInspectable var areaUnderLinesVisible:Bool = true
@@ -51,7 +51,7 @@ import QuartzCore
     var marginTop:CGFloat = 25
     var marginRight:CGFloat = 25
     var animationDuration: CFTimeInterval = 1
-
+    
     let colors: [UIColor] = [
         UIColor.fromHex(0x1f77b4),
         UIColor.fromHex(0xff7f0e),
@@ -64,7 +64,7 @@ import QuartzCore
         UIColor.fromHex(0xbcbd22),
         UIColor.fromHex(0x17becf)
     ]
-
+    
     
     var offsetX: Offset = Offset(min:0.0, max:1.0)
     var offsetY: Offset = Offset(min:0.0, max:1.0)
@@ -72,7 +72,7 @@ import QuartzCore
     var drawingArea:CGRect  = CGRectZero
     var pointBase:CGPoint = CGPointZero
     var pointZero:CGPoint {
-            return drawingArea.origin
+        return drawingArea.origin
     }
     var selectetedXlayer:CAShapeLayer? = nil
     
@@ -96,13 +96,13 @@ import QuartzCore
         self.addLine(line)
         self.setNeedsDisplay()
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     func addLine(line:APChartLine){
-
+        
         collectionLines.append(line)
     }
     
@@ -114,7 +114,7 @@ import QuartzCore
             return
         }
         
-
+        
         // remove all labels
         for view: AnyObject in self.subviews {
             view.removeFromSuperview()
@@ -127,32 +127,32 @@ import QuartzCore
         lineLayerStore.removeAll()
         
         updateDrawingArea()
-
+        
         drawGrid()
         
         drawAxes()
         
         calculateOffsets()
         updateLinesDataStoreScaled()
-
+        
         drawXLabels()
         drawYLabels()
         
-
+        
         var layer:CAShapeLayer? = nil
         for  lineData in collectionLines {
             
             lineData.showMeanValue = showMean
             lineData.showMeanValueProgressive = showMeanProgressive
-
+            
             if let layer = lineData.drawLine() {
                 self.layer.addSublayer(layer)
                 self.lineLayerStore.append(layer)
             }
-
+            
             lineData.drawMeanValue()
             lineData.drawMeanProgressive()
-
+            
             
             // draw dots
             if showDots {
@@ -168,9 +168,9 @@ import QuartzCore
             if areaUnderLinesVisible { lineData.drawAreaBeneathLineChart() }
             
         }
-
+        
     }
-   
+    
     
     func updateDrawingArea(){
         drawingArea = CGRect(x: marginLeft, y: self.bounds.height-marginBottom, width: self.bounds.width  - marginLeft - marginRight, height: self.bounds.height - marginTop  - marginBottom)
@@ -230,7 +230,7 @@ import QuartzCore
         var y:CGFloat = drawingArea.origin.y
         var step:CGFloat = 0.0
         while step++ < gridLinesY {
-//              println("drawYGrid: \(step) \(y) -> \(y-delta_h)")
+            //              println("drawYGrid: \(step) \(y) -> \(y-delta_h)")
             y -= delta_h
             CGContextMoveToPoint( context, drawingArea.origin.x, y )
             CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width, y)
@@ -258,7 +258,7 @@ import QuartzCore
         CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5+10,  drawingArea.origin.y)
         CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5,  drawingArea.origin.y+4)
         CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5,  drawingArea.origin.y-4)
-
+        
         CGContextStrokePath(context)
         // draw y-axis
         CGContextMoveToPoint(context, drawingArea.origin.x, drawingArea.origin.y)
@@ -272,6 +272,7 @@ import QuartzCore
         var xAxeTitle = UILabel(frame: CGRect(x: pointZero.x, y: height - labelAxesSize.height, width: drawingArea.width, height: labelAxesSize.height))
         xAxeTitle.font = UIFont.italicSystemFontOfSize(12.0)
         xAxeTitle.textAlignment = .Right
+        xAxeTitle.backgroundColor = UIColor.clearColor()
         xAxeTitle.text = titleForX
         self.addSubview(xAxeTitle)
         
@@ -283,29 +284,45 @@ import QuartzCore
         var yframe = yAxeTitle.frame
         yAxeTitle.layer.anchorPoint = CGPoint(x:(yframe.size.height / yframe.size.width * 0.5), y: -0.5) // Anchor points are in unit space
         yAxeTitle.frame = yframe; // Moving the anchor point moves the layer's position, this is a simple way to re-set
-       yAxeTitle.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI)/2)
-
+        yAxeTitle.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI)/2)
+        
         self.addSubview(yAxeTitle)
-
+        
     }
-
+    
     
     
     func calculateOffsets()  {
         offsetX = Offset(min:0.0, max:1.0)
-        offsetY = Offset(min:10000.0, max:1.0)
+        offsetY = Offset(min:0.0, max:1.0)
+        
+        if collectionLines.count == 0 {
+            return
+        }
+        if collectionLines[0].dots.count == 0 {
+            return
+        }
+        var p = collectionLines[0].dots[0]
+        println("\(p.dot)")
+        offsetX = Offset(min:p.dot.x, max:p.dot.x )
+        offsetY = Offset(min:p.dot.y, max:p.dot.y )
         
         for line in collectionLines {
+            
             for curr:APChartPoint in line.dots {
                 offsetX.updateMinMax(curr.dot.x)
                 offsetY.updateMinMax(curr.dot.y)
             }
         }
+        println("Offset \(offsetX.min), \(offsetX.max) \(offsetX.delta()/10) | \(offsetY)")
         
         var x = offsetX.delta()/10
+        offsetX.min -= x
         offsetX.max += x
         var y = offsetY.delta()/10
+        offsetY.min -= y
         offsetY.max += y
+        println("Offset \(x)\(offsetX.min), \(offsetX.max) \(offsetY)")
         
         if x > 0.0 && x < offsetX.min {
             offsetX.min -= 2*y
@@ -313,33 +330,34 @@ import QuartzCore
         if y > 0.0 && y < offsetY.min {
             offsetY.min -= 2*y
         }
-
+        println("Offset \(offsetX.min), \(offsetX.max) \(offsetY)")
+        
     }
     
     func updateLinesDataStoreScaled() {
         
-        var x_factor = drawingArea.width / ( offsetX.max) // - pointZero.x )
+        var x_factor = drawingArea.width / ( offsetX.delta()) // - pointZero.x )
         var y_factor = drawingArea.height /  offsetY.delta()
         var factorPoint = CGPoint(x: x_factor, y: y_factor)
-
+        
         pointBase = CGPoint(x: pointZero.x-offsetX.min*x_factor , y: pointZero.y+offsetY.min*y_factor)
         for line in collectionLines {
-             line.updatePoints( factorPoint, offset: pointBase )
+            line.updatePoints( factorPoint, offset: pointBase )
         }
-            
+        
     }
-
+    
     /**
     * Draw x labels.
     */
     func drawXLabels() {
         if !showLabelsX {
-           return
+            return
         }
         if (offsetX.min > 0 ){
-            var label = UILabel(frame: CGRect(x: pointZero.x-10.0, y: pointZero.y+8.0, width: pointZero.x-4.0, height: 16.0))
-            label.backgroundColor = UIColor(red: 0.5, green: 0.3, blue: 0.9, alpha: 0.7)
-            label.font = UIFont.systemFontOfSize(10)
+            var label = UILabel(frame: CGRect(x: pointZero.x-6.0, y: pointZero.y+12.0, width: pointZero.x-4.0-16.0, height: 16.0))
+            label.backgroundColor = UIColor.clearColor()
+            label.font = UIFont.boldSystemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Left
             label.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * 7 / 18)
             
@@ -355,14 +373,14 @@ import QuartzCore
             x += delta
             
             var label = UILabel(frame: CGRect(x: x-12.0, y: pointZero.y+12.0, width: pointZero.x-4.0-16.0, height: 16.0))
-            label.font = UIFont.systemFontOfSize(10)
+            label.font = UIFont.boldSystemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Left
             label.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * 7 / 18)
             label.text = "\(Int(xValue_delta*step))"
-
+            
             self.addSubview(label)
         }
-
+        
     }
     
     /**
@@ -378,7 +396,7 @@ import QuartzCore
             label.font = UIFont.systemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Right
             label.text = "\(Int(offsetY.min))"
-
+            
             self.addSubview(label)
         }
         
@@ -421,7 +439,7 @@ import QuartzCore
         }
         return selectedDot
     }
-
+    
     /**
     * Handle touch events.
     */
@@ -437,7 +455,7 @@ import QuartzCore
         UIColor.grayColor().setStroke()
         bpath.stroke()
         selectetedXlayer?.removeFromSuperlayer()
-
+        
         selectetedXlayer = CAShapeLayer()
         selectetedXlayer!.frame = self.bounds
         selectetedXlayer!.path = bpath.CGPath
@@ -445,7 +463,7 @@ import QuartzCore
         selectetedXlayer!.fillColor = nil
         selectetedXlayer!.lineWidth = 1.0
         self.layer.addSublayer(selectetedXlayer)
-
+        
         
         if let closestDots = getClosetLineDot(selectedPoint) {
             delegate?.didSelectNearDataPoint(closestDots)
