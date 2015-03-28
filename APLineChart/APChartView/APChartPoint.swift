@@ -23,7 +23,7 @@ class APChartPoint {
     var backgroundColor:UIColor = UIColor.grayColor()
     var chart:APChartView!
     var extra:[String:AnyObject!] = [:]
-    
+
     var outerRadius: CGFloat = 12
     var innerRadius: CGFloat = 8
     var outerRadiusHighlighted: CGFloat = 12

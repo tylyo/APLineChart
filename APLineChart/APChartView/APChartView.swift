@@ -39,11 +39,13 @@ protocol APChartViewDelegate {
     
     @IBInspectable var showDots:Bool = false
     @IBInspectable var dotsBackgroundColor:UIColor = UIColor.whiteColor()
-    @IBInspectable var showUnderLines:Bool = true
+    @IBInspectable var areaUnderLinesVisible:Bool = true
     
     var animationEnabled = true
     @IBInspectable var showMean:Bool = false
     @IBInspectable var showMeanProgressive:Bool = false
+    @IBInspectable var showMax:Bool = false
+    @IBInspectable var showMin:Bool = false
     
     var marginBottom:CGFloat = 50.0
     lazy var marginLeft:CGFloat = {
@@ -77,6 +79,8 @@ protocol APChartViewDelegate {
     }
     var selectetedXlayer:CAShapeLayer? = nil
     
+    var lineMax :APChartMarkerLine?
+    var lineMin :APChartMarkerLine?
     var removeAll: Bool = false
     
     override init(frame: CGRect) {
@@ -113,17 +117,18 @@ protocol APChartViewDelegate {
         
         collectionLines.append(line)
     }
-    
+
     func addMarkerLine(title:String, x:CGFloat) {
         
         var line = APChartMarkerLine(chartView: self, title: title, x: x, lineColor: UIColor.redColor())
         collectionMarkers.append(line)
     }
     
-    
+
     func addMarkerLine(title:String, y:CGFloat){
         var line = APChartMarkerLine(chartView: self, title: title, y: y, lineColor: UIColor.blueColor())
         collectionMarkers.append(line)
+
     }
     
     override func drawRect(rect: CGRect) {
@@ -152,6 +157,19 @@ protocol APChartViewDelegate {
         drawAxes()
         
         calculateOffsets()
+        
+        lineMax = nil
+        lineMin = nil
+        println(" showMax \(showMax)")
+        if showMax {
+            lineMax = APChartMarkerLine(chartView: self, title: "Max", y: offsetY.maxValue, lineColor: UIColor.blueColor())
+        }
+        println(" showMin \(showMin)")
+        if showMin {
+            lineMin = APChartMarkerLine(chartView: self, title: "Min", y: offsetY.minValue, lineColor: UIColor.blueColor())
+        }
+        
+        
         updateLinesDataStoreScaled()
         
         drawXLabels()
@@ -184,10 +202,23 @@ protocol APChartViewDelegate {
             }
             
             // draw area under line chart
-            if showUnderLines { lineData.drawAreaBeneathLineChart() }
+            if areaUnderLinesVisible { lineData.drawAreaBeneathLineChart() }
             
         }
         
+        if let markerLine = lineMax? {
+            if let layer = markerLine.drawLine() {
+                self.layer.addSublayer(layer)
+                self.lineLayerStore.append(layer)
+            }
+        }
+        if let markerLine = lineMin? {
+            if let layer = markerLine.drawLine() {
+                self.layer.addSublayer(layer)
+                self.lineLayerStore.append(layer)
+            }
+        }
+
         for markerLine in collectionMarkers {
             if let layer = markerLine.drawLine() {
                 self.layer.addSublayer(layer)
@@ -307,7 +338,7 @@ protocol APChartViewDelegate {
         yAxeTitle.textAlignment = .Right
         yAxeTitle.text = titleForY
         yAxeTitle.backgroundColor = UIColor.clearColor()
-        
+
         var yframe = yAxeTitle.frame
         yAxeTitle.layer.anchorPoint = CGPoint(x:(yframe.size.height / yframe.size.width * 0.5), y: -0.5) // Anchor points are in unit space
         yAxeTitle.frame = yframe; // Moving the anchor point moves the layer's position, this is a simple way to re-set
@@ -356,7 +387,7 @@ protocol APChartViewDelegate {
         yAxeTitle.textAlignment = .Right
         yAxeTitle.text = titleForY
         yAxeTitle.backgroundColor = UIColor.clearColor()
-        
+       
         var yframe = yAxeTitle.frame
         yAxeTitle.layer.anchorPoint = CGPoint(x:(yframe.size.height / yframe.size.width * 0.5), y: -0.5) // Anchor points are in unit space
         yAxeTitle.frame = yframe; // Moving the anchor point moves the layer's position, this is a simple way to re-set
@@ -389,7 +420,8 @@ protocol APChartViewDelegate {
                 offsetY.updateMinMax(curr.dot.y)
             }
         }
-        println("Offset \(offsetX.min), \(offsetX.max) \(offsetX.delta()/10) | \(offsetY)")
+        println("Offset X \(offsetX.min), \(offsetX.max) \(offsetX.delta()/10) ")
+        println("Offset Y \(offsetY.min), \(offsetY.max) \(offsetY.delta()/10) ")
         
         var x = offsetX.delta()/10
         offsetX.min -= x
@@ -397,7 +429,6 @@ protocol APChartViewDelegate {
         var y = offsetY.delta()/10
         offsetY.min -= y
         offsetY.max += y
-        println("Offset \(x)\(offsetX.min), \(offsetX.max) \(offsetY)")
         
         if x > 0.0 && x < offsetX.min {
             offsetX.min -= 2*y
@@ -405,7 +436,6 @@ protocol APChartViewDelegate {
         if y > 0.0 && y < offsetY.min {
             offsetY.min -= 2*y
         }
-        println("Offset \(offsetX.min), \(offsetX.max) \(offsetY)")
         
     }
     
@@ -423,6 +453,9 @@ protocol APChartViewDelegate {
         for line in collectionMarkers {
             line.updatePoints( factorPoint, offset: pointBase )
         }
+        
+        lineMin?.updatePoints(factorPoint, offset: pointBase)
+        lineMax?.updatePoints(factorPoint, offset: pointBase)
         
     }
     
@@ -457,7 +490,7 @@ protocol APChartViewDelegate {
             label.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * 7 / 18)
             label.text = "\((offsetX.min + xValue_delta*step).round2dec())"
             label.sizeToFit()
-            
+
             self.addSubview(label)
         }
         
@@ -477,7 +510,7 @@ protocol APChartViewDelegate {
             label.textAlignment = NSTextAlignment.Right
             label.text = "\(offsetY.min.round2dec())"
             label.sizeToFit()
-            
+      
             self.addSubview(label)
         }
         
@@ -493,7 +526,7 @@ protocol APChartViewDelegate {
             label.textAlignment = NSTextAlignment.Right
             label.text = "\((yValue_delta*step+offsetY.min).round2dec())"
             label.sizeToFit()
-            
+      
             self.addSubview(label)
             
         }
@@ -535,8 +568,6 @@ protocol APChartViewDelegate {
         var bpath = UIBezierPath()
         bpath.moveToPoint(CGPoint(x: selectedPoint.x, y: marginTop))
         bpath.addLineToPoint(CGPoint(x: selectedPoint.x, y: pointZero.y))
-        UIColor.grayColor().setStroke()
-        bpath.stroke()
         selectetedXlayer?.removeFromSuperlayer()
         
         selectetedXlayer = CAShapeLayer()
@@ -574,6 +605,8 @@ protocol APChartViewDelegate {
 class Offset {
     var min:CGFloat = 0.0
     var max:CGFloat = 1.0
+    var maxValue:CGFloat = 1.0
+    var minValue:CGFloat = 0.0
     
     init(min:CGFloat, max:CGFloat){
         self.min = min
@@ -586,6 +619,9 @@ class Offset {
         if self.max <  value {
             self.max = value
         }
+        
+        self.maxValue = self.max
+        self.minValue = self.min
     }
     
     func delta() -> CGFloat {

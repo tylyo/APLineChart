@@ -40,8 +40,9 @@ extension CGPoint {
         var xDist2:CGFloat  = abs(self.x - toPoint.x)
         return xDist2;
     }
-    
+
 }
+
 
 extension Double {
     func round2dec() -> Double {

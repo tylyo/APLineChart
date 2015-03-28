@@ -8,6 +8,8 @@
 
 import UIKit
 import QuartzCore
+
+
 class APChartLine  {
     var chart:APChartView!
     var dots:[APChartPoint] = []
@@ -20,6 +22,7 @@ class APChartLine  {
     var showMeanValueProgressive:Bool = false
     var meanCoordsProgressive:[CGFloat] = []
     var extra:[String:AnyObject!] = [:]
+    
     
     init(chartView:APChartView, title:String, points:[APChartPoint]) {
         self.chart = chartView
@@ -55,21 +58,22 @@ class APChartLine  {
         dots.removeAll()
     }
     
-    
+
     func updatePoints(factorPoint:CGPoint, offset:CGPoint){
-        
+       
         for (index, dot) in enumerate(dots){
             dots[index] = dot.updatePoint(factorPoint, offset: offset)
         }
-        
+
     }
     
     func drawLine() -> CAShapeLayer? {
         //        let currentLine = linesDataStore[lineIndex]
-        //         println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
+//         println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
         
-        
+
         var bpath = UIBezierPath()
+        println("dot 0 : \(dots[0].point)")
         bpath.moveToPoint(CGPoint(x: dots[0].point.x, y: dots[0].point.y))
         
         for (index, dot) in enumerate(dots) {
@@ -92,23 +96,23 @@ class APChartLine  {
         UIColor.clearColor().setStroke()
         bpath.lineCapStyle = kCGLineCapRound
         bpath.stroke()
-        //
+//
         var layer = CAShapeLayer()
         layer.frame = self.chart.bounds
         layer.path = bpath.CGPath
         layer.strokeColor = lineColor.CGColor //colors[lineIndex].CGColor
         layer.fillColor = nil
         layer.lineWidth = lineWidth
-        
+
         var animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = 1.0
-        animation.fromValue = 0
-        animation.toValue = 1
-        layer.addAnimation(animation, forKey: "strokeEnd")
-        
+            animation.duration = 1.0
+            animation.fromValue = 0
+            animation.toValue = 1
+            layer.addAnimation(animation, forKey: "strokeEnd")
+    
         return layer
     }
-    
+
     func drawDots(bgColor:UIColor) -> [CALayer]? {
         var retLayers:[CALayer]? = []
         for currDot in dots {
@@ -122,7 +126,7 @@ class APChartLine  {
     * Fill area between line chart and x-axis.
     */
     func drawAreaBeneathLineChart() {
-        
+
         var bpath = UIBezierPath()
         bpath.moveToPoint(CGPoint(x: dots[0].point.x, y: chart.pointZero.y))
         for dot in dots {
@@ -137,7 +141,7 @@ class APChartLine  {
         bpath.stroke()
         
     }
-    
+
     func drawMeanProgressive(){
         if !showMeanValueProgressive || meanCoordsProgressive.count == 0 {
             return
@@ -168,7 +172,7 @@ class APChartLine  {
         animation.fromValue = 0
         animation.toValue = 1
         layer.addAnimation(animation, forKey: "strokeEnd")
-        
+
         var lblMean = UILabel(frame: CGRect(origin: CGPoint(x: chart.drawingArea.origin.x, y: meanCoord), size: chart.labelAxesSize))
         lblMean.font = UIFont.italicSystemFontOfSize(10.0)
         lblMean.textAlignment = .Left
@@ -201,7 +205,7 @@ class APChartLine  {
         layer.fillColor = nil
         layer.lineWidth = 1.0
         layer.lineDashPattern = [6,2]
-        //
+//        
         var animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = 1.0
         animation.fromValue = 0
@@ -215,7 +219,7 @@ class APChartLine  {
         chart.addSubview(lblMean)
         chart.layer.addSublayer(layer)
         chart.lineLayerStore.append(layer)
-        
+
     }
-    
+
 }
