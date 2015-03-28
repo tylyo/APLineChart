@@ -17,6 +17,7 @@ protocol APChartViewDelegate {
 
 @IBDesignable class APChartView:UIView{
     var collectionLines:[APChartLine] = []
+    var collectionMarkers:[APChartMarkerLine] = []
     var delegate: APChartViewDelegate!
     
     let labelAxesSize:CGSize = CGSize(width: 35.0, height: 20.0)
@@ -94,6 +95,13 @@ protocol APChartViewDelegate {
         line.addPoint(CGPoint(x: 102.0, y: 92.0))
         line.addPoint(CGPoint(x: 115.0, y: 88.0))
         self.addLine(line)
+        
+        
+        var markerX = APChartMarkerLine(chartView: self, title: "x marker", x: 85.0, lineColor: UIColor.redColor() )
+        
+        self.addMarkerLine("x marker", x: 85.0 )
+        self.addMarkerLine("y marker", y: 120.0 )
+        
         self.setNeedsDisplay()
     }
     
@@ -106,6 +114,17 @@ protocol APChartViewDelegate {
         collectionLines.append(line)
     }
     
+    func addMarkerLine(title:String, x:CGFloat) {
+        
+        var line = APChartMarkerLine(chartView: self, title: title, x: x, lineColor: UIColor.redColor())
+        collectionMarkers.append(line)
+    }
+    
+    
+    func addMarkerLine(title:String, y:CGFloat){
+        var line = APChartMarkerLine(chartView: self, title: title, y: y, lineColor: UIColor.blueColor())
+        collectionMarkers.append(line)
+    }
     
     override func drawRect(rect: CGRect) {
         if removeAll {
@@ -167,6 +186,13 @@ protocol APChartViewDelegate {
             // draw area under line chart
             if areaUnderLinesVisible { lineData.drawAreaBeneathLineChart() }
             
+        }
+        
+        for markerLine in collectionMarkers {
+            if let layer = markerLine.drawLine() {
+                self.layer.addSublayer(layer)
+                self.lineLayerStore.append(layer)
+            }
         }
         
     }
@@ -281,6 +307,7 @@ protocol APChartViewDelegate {
         yAxeTitle.textAlignment = .Right
         yAxeTitle.text = titleForY
         yAxeTitle.backgroundColor = UIColor.clearColor()
+        
         var yframe = yAxeTitle.frame
         yAxeTitle.layer.anchorPoint = CGPoint(x:(yframe.size.height / yframe.size.width * 0.5), y: -0.5) // Anchor points are in unit space
         yAxeTitle.frame = yframe; // Moving the anchor point moves the layer's position, this is a simple way to re-set
@@ -290,6 +317,54 @@ protocol APChartViewDelegate {
         
     }
     
+    func drawMarkers() {
+        if (!showAxes){
+            return
+        }
+        var height = self.bounds.height
+        var width = self.bounds.width
+        
+        var context = UIGraphicsGetCurrentContext()
+        CGContextSetStrokeColorWithColor(context, axesColor.CGColor)
+        // draw x-axis
+        CGContextMoveToPoint(context, drawingArea.origin.x, drawingArea.origin.y)
+        CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5,  drawingArea.origin.y)
+        CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5,  drawingArea.origin.y-4)
+        CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5+10,  drawingArea.origin.y)
+        CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5,  drawingArea.origin.y+4)
+        CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width+5,  drawingArea.origin.y-4)
+        
+        CGContextStrokePath(context)
+        // draw y-axis
+        CGContextMoveToPoint(context, drawingArea.origin.x, drawingArea.origin.y)
+        CGContextAddLineToPoint(context, drawingArea.origin.x, marginTop - 5.0 )
+        CGContextAddLineToPoint(context, drawingArea.origin.x-4.0, marginTop - 5.0 )
+        CGContextAddLineToPoint(context, drawingArea.origin.x, marginTop - 5.0 - 10.0)
+        CGContextAddLineToPoint(context, drawingArea.origin.x+4.0, marginTop - 5.0 )
+        CGContextAddLineToPoint(context, drawingArea.origin.x-4.0, marginTop - 5.0 )
+        CGContextStrokePath(context)
+        
+        var xAxeTitle = UILabel(frame: CGRect(x: pointZero.x, y: height - labelAxesSize.height, width: drawingArea.width, height: labelAxesSize.height))
+        xAxeTitle.font = UIFont.italicSystemFontOfSize(12.0)
+        xAxeTitle.textAlignment = .Right
+        xAxeTitle.backgroundColor = UIColor.clearColor()
+        xAxeTitle.text = titleForX
+        self.addSubview(xAxeTitle)
+        
+        var yAxeTitle = UILabel(frame: CGRect(x: -labelAxesSize.height, y: pointZero.y, width: drawingArea.height, height:  labelAxesSize.height))
+        yAxeTitle.font = UIFont.italicSystemFontOfSize(12.0)
+        yAxeTitle.textAlignment = .Right
+        yAxeTitle.text = titleForY
+        yAxeTitle.backgroundColor = UIColor.clearColor()
+        
+        var yframe = yAxeTitle.frame
+        yAxeTitle.layer.anchorPoint = CGPoint(x:(yframe.size.height / yframe.size.width * 0.5), y: -0.5) // Anchor points are in unit space
+        yAxeTitle.frame = yframe; // Moving the anchor point moves the layer's position, this is a simple way to re-set
+        yAxeTitle.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI)/2)
+        
+        self.addSubview(yAxeTitle)
+        
+    }
     
     
     func calculateOffsets()  {
@@ -345,6 +420,10 @@ protocol APChartViewDelegate {
             line.updatePoints( factorPoint, offset: pointBase )
         }
         
+        for line in collectionMarkers {
+            line.updatePoints( factorPoint, offset: pointBase )
+        }
+        
     }
     
     /**
@@ -360,13 +439,13 @@ protocol APChartViewDelegate {
             label.font = UIFont.boldSystemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Left
             label.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * 7 / 18)
-            
-            label.text = "\(Int(offsetX.min))"
+            label.sizeToFit()
+            label.text = "\(offsetX.min.round2dec())"
             self.addSubview(label)
         }
         
         var delta = drawingArea.width  / gridLinesX
-        var xValue_delta = offsetX.max  / gridLinesX
+        var xValue_delta = offsetX.delta()  / gridLinesX
         var x:CGFloat = pointZero.x
         var step:CGFloat = 0.0
         while step++ < gridLinesX {
@@ -376,7 +455,8 @@ protocol APChartViewDelegate {
             label.font = UIFont.boldSystemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Left
             label.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * 7 / 18)
-            label.text = "\(Int(xValue_delta*step))"
+            label.text = "\((offsetX.min + xValue_delta*step).round2dec())"
+            label.sizeToFit()
             
             self.addSubview(label)
         }
@@ -395,7 +475,8 @@ protocol APChartViewDelegate {
             var label = UILabel(frame: CGRect(x: 18.0, y:  pointZero.y-16.0, width: pointZero.x-4.0-16.0, height: 16.0))
             label.font = UIFont.systemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Right
-            label.text = "\(Int(offsetY.min))"
+            label.text = "\(offsetY.min.round2dec())"
+            label.sizeToFit()
             
             self.addSubview(label)
         }
@@ -410,7 +491,8 @@ protocol APChartViewDelegate {
             var label = UILabel(frame: CGRect(x: 18.0, y: y-8.0, width: pointZero.x-4.0-16.0, height: 16.0))
             label.font = UIFont.systemFontOfSize(10)
             label.textAlignment = NSTextAlignment.Right
-            label.text = "\(Int(yValue_delta*step+offsetY.min))"
+            label.text = "\((yValue_delta*step+offsetY.min).round2dec())"
+            label.sizeToFit()
             
             self.addSubview(label)
             
@@ -423,12 +505,13 @@ protocol APChartViewDelegate {
         var diff:CGFloat = 0.0
         var selectedDot:[String:APChartPoint] = [:]
         for line in collectionLines {
-            delta = 100000.0
+            delta = 5.0
             for (index,dot) in enumerate(line.dots){
                 dot.backgroundColor = dotsBackgroundColor
                 
                 diff  =  selectedPoint.distanceXFrom(dot.point)
-                if (delta > diff){
+                if delta > diff
+                {
                     selectedDot[line.title] = dot
                     delta = diff
                 }

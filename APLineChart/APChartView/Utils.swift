@@ -40,5 +40,17 @@ extension CGPoint {
         var xDist2:CGFloat  = abs(self.x - toPoint.x)
         return xDist2;
     }
+    
+}
 
+
+extension Double {
+    func round2dec() -> Double {
+        return Double(round(self*100)/100)
+    }
+}
+extension CGFloat {
+    func round2dec() -> CGFloat {
+        return CGFloat(round(self*100)/100)
+    }
 }

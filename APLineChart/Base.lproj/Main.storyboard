@@ -38,29 +38,7 @@
                                 <rect key="frame" x="0.0" y="143" width="600" height="457"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="titleForX" value="x"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="titleForY" value="y"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="axesVisible" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="gridVisible" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="labelsXVisible" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="GridLinesX">
-                                        <real key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="GridLinesY">
-                                        <real key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="labelsYVisible" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="dotsVisible" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="areaUnderLinesVisible" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showMean" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showMeanProgressive" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showMax" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="gridLinesX">
-                                        <real key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="gridLinesY">
-                                        <real key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showAxes" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCK-EL-8dH">

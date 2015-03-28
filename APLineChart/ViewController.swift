@@ -31,6 +31,11 @@ class ViewController: UIViewController,APChartViewDelegate {
             
         }
         chart.addLine(line)
+        
+        
+        self.chart.addMarkerLineX("x marker", x: 85.0 )
+        self.chart.addMarkerLineY("y marker", y: 120.0 )
+        
         chart.setNeedsDisplay()
 
     }

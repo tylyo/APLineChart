@@ -8,28 +8,44 @@
 
 import UIKit
 
+extension CGFloat {
+    func updatePointX(factor:CGFloat, _ offset:CGFloat) -> CGFloat {
+        return offset + self * factor
+    }
+    func updatePointY (factor:CGFloat, _ offset:CGFloat) -> CGFloat {
+        return offset - self * factor
+    }
+}
 class APChartPoint {
     var dot:CGPoint = CGPoint(x: 0.0, y: 0.0)
     var point:CGPoint = CGPoint(x:0.0, y:0.0)
     var color:UIColor = UIColor.grayColor()
     var backgroundColor:UIColor = UIColor.grayColor()
     var chart:APChartView!
+    var extra:[String:AnyObject!] = [:]
     
     var outerRadius: CGFloat = 12
     var innerRadius: CGFloat = 8
     var outerRadiusHighlighted: CGFloat = 12
     var innerRadiusHighlighted: CGFloat = 8
-
+    
     required init(_ dot: CGPoint){
         self.dot = dot
     }
     
+    required init(_ dot: CGPoint, extra:[String:AnyObject!]){
+        self.dot = dot
+        self.extra = extra
+    }
+    
     func updatePoint  (factor:CGPoint, offset:CGPoint ) -> APChartPoint{
         
-        self.point = CGPoint( x: offset.x + (dot.x  * factor.x), y: -dot.y * factor.y + offset.y)
+        //        self.point = CGPoint( x: offset.x + (dot.x  * factor.x), y: offset.y - dot.y * factor.y )
+        self.point = CGPoint( x: dot.x.updatePointX(factor.x, offset.x) ,  y: dot.y.updatePointY(factor.y, offset.y))
         return self
     }
-
+    
+    
     /**
     * Draw dot at every data point.
     */
@@ -50,7 +66,7 @@ class APChartPoint {
         dotLayerInner.cornerRadius = innerRadius / 2
         dotLayerInner.frame = CGRectInset(dotLayer.bounds, inset/2, inset/2)
         
-
+        
         dotLayer.addSublayer(dotLayerInner)
         
         // animate opacity
