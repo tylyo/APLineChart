@@ -50,7 +50,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showLabelsX" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showLabelsY" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showDots" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="areaUnderLinesVisible" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showUnderLines" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showMean" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showMeanProgressive" value="YES"/>
                                 </userDefinedRuntimeAttributes>

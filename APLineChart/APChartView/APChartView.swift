@@ -39,7 +39,7 @@ protocol APChartViewDelegate {
     
     @IBInspectable var showDots:Bool = false
     @IBInspectable var dotsBackgroundColor:UIColor = UIColor.whiteColor()
-    @IBInspectable var areaUnderLinesVisible:Bool = true
+    @IBInspectable var showUnderLines:Bool = true
     
     var animationEnabled = true
     @IBInspectable var showMean:Bool = false
@@ -184,7 +184,7 @@ protocol APChartViewDelegate {
             }
             
             // draw area under line chart
-            if areaUnderLinesVisible { lineData.drawAreaBeneathLineChart() }
+            if showUnderLines { lineData.drawAreaBeneathLineChart() }
             
         }
         
