@@ -14,18 +14,17 @@ than you are free to customize it and to see the updates in realtime.
 
 In order to add one or more line you have to simple follow these instructions:
 
-1. create a line:
 ```swift
+// create a line
 var line = APChartLine(chartView: chart, title: "prova", lineWidth: 2.0, lineColor: UIColor.purpleColor())
-```
 
-2. add point to this line:
-```swift
-line.addPoint( CGPoint(x: x, y: y))
-```
+//add points to this line:
+line.addPoint( CGPoint(x: 12.0, y: 24.0y))
+line.addPoint( CGPoint(x: 16.0, y: 16.0y))
+line.addPoint( CGPoint(x: 19.0, y: 20.0y))
+line.addPoint( CGPoint(x: 21.0, y: 18.0y))
 
-3. and add the line to the chart:
-```swift
+// and add the line to the chart:
 chart.addLine(line)
 ```
 
