@@ -43,7 +43,6 @@ extension CGPoint {
     
 }
 
-
 extension Double {
     func round2dec() -> Double {
         return Double(round(self*100)/100)
