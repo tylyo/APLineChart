@@ -55,5 +55,7 @@ dotsBackgroundColor:UIColor // dot color
 showUnderLines:Bool // display or not the area under lines
 showMean:Bool // display or not the Average value
 showMeanProgressive:Bool // display or not the Average value calculated in progression
+showMax:Bool
+showMin:Bool 
 ```
 
