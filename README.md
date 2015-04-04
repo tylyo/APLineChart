@@ -5,6 +5,7 @@ It's a fully customizable Line chart using Interface Builder. I hope that it cou
 Any feedback are welcome
 
 ![portrait image](https://raw.github.com/tylyo/APLineChart/master/portrait.png)
+![landscape image](https://raw.github.com/tylyo/APLineChart/master/landscape.png)
 
 ## Usage
 What you have to do is to include APChartView directory in your project.
@@ -29,6 +30,9 @@ line.addPoint( CGPoint(x: 21.0, y: 18.0y))
 // and add the line to the chart:
 chart.addLine(line)
 ```
+## UI Customizations
+
+![controls](https://raw.github.com/tylyo/APLineChart/master/controls.png)
 
 ## Customizations
 ```swift
