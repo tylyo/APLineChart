@@ -149,7 +149,7 @@ protocol APChartViewDelegate {
             lineLayer.removeFromSuperlayer()
         }
         lineLayerStore.removeAll()
-        
+        selectetedXlayer?.removeFromSuperlayer()
         updateDrawingArea()
         
         drawGrid()
