@@ -7,6 +7,10 @@ Any feedback are welcome
 ![portrait image](https://raw.github.com/tylyo/APLineChart/master/images/portrait.png)
 ![landscape image](https://raw.github.com/tylyo/APLineChart/master/images/landscape.png)
 
+##Requirements
+* Xcode 6.3
+* iOS 8 or higher
+
 ## Usage
 What you have to do is to include APChartView directory in your project.
 
