@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15204D5F1AC547ED00F4EBAE /* APChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15204D5E1AC547ED00F4EBAE /* APChartMarker.swift */; };
+		154484A21ACFE6EB00733584 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 154484A11ACFE6EB00733584 /* README.md */; };
 		158435491AC027B600120D74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158435481AC027B600120D74 /* AppDelegate.swift */; };
 		1584354B1AC027B600120D74 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1584354A1AC027B600120D74 /* ViewController.swift */; };
 		1584354E1AC027B600120D74 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1584354C1AC027B600120D74 /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		15204D5E1AC547ED00F4EBAE /* APChartMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APChartMarker.swift; sourceTree = "<group>"; };
+		154484A11ACFE6EB00733584 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		158435431AC027B600120D74 /* APLineChart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APLineChart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		158435471AC027B600120D74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		158435481AC027B600120D74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		158435451AC027B600120D74 /* APLineChart */ = {
 			isa = PBXGroup;
 			children = (
+				154484A11ACFE6EB00733584 /* README.md */,
 				158435481AC027B600120D74 /* AppDelegate.swift */,
 				1584354A1AC027B600120D74 /* ViewController.swift */,
 				15F196701AC1B39600CBEFA6 /* APChartView */,
@@ -241,6 +244,7 @@
 				15F196751AC1B39600CBEFA6 /* APChartLine.swift in Sources */,
 				15F196761AC1B39600CBEFA6 /* APChartPoint.swift in Sources */,
 				158435491AC027B600120D74 /* AppDelegate.swift in Sources */,
+				154484A21ACFE6EB00733584 /* README.md in Sources */,
 				15F196781AC1B39600CBEFA6 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
