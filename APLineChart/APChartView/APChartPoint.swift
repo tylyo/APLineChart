@@ -40,7 +40,6 @@ class APChartPoint {
     
     func updatePoint  (factor:CGPoint, offset:CGPoint ) -> APChartPoint{
         
-        //        self.point = CGPoint( x: offset.x + (dot.x  * factor.x), y: offset.y - dot.y * factor.y )
         self.point = CGPoint( x: dot.x.updatePointX(factor.x, offset.x) ,  y: dot.y.updatePointY(factor.y, offset.y))
         return self
     }

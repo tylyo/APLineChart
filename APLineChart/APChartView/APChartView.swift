@@ -150,6 +150,7 @@ protocol APChartViewDelegate {
         }
         lineLayerStore.removeAll()
         selectetedXlayer?.removeFromSuperlayer()
+        
         updateDrawingArea()
         
         drawGrid()
@@ -160,11 +161,11 @@ protocol APChartViewDelegate {
         
         lineMax = nil
         lineMin = nil
-        println(" showMax \(showMax)")
+
         if showMax {
             lineMax = APChartMarkerLine(chartView: self, title: "Max", y: offsetY.maxValue, lineColor: UIColor.blueColor())
         }
-        println(" showMin \(showMin)")
+
         if showMin {
             lineMin = APChartMarkerLine(chartView: self, title: "Min", y: offsetY.minValue, lineColor: UIColor.blueColor())
         }
@@ -287,7 +288,7 @@ protocol APChartViewDelegate {
         var y:CGFloat = drawingArea.origin.y
         var step:CGFloat = 0.0
         while step++ < gridLinesY {
-            //              println("drawYGrid: \(step) \(y) -> \(y-delta_h)")
+
             y -= delta_h
             CGContextMoveToPoint( context, drawingArea.origin.x, y )
             CGContextAddLineToPoint(context, drawingArea.origin.x + drawingArea.width, y)
@@ -409,7 +410,7 @@ protocol APChartViewDelegate {
             return
         }
         var p = collectionLines[0].dots[0]
-        println("\(p.dot)")
+
         offsetX = Offset(min:p.dot.x, max:p.dot.x )
         offsetY = Offset(min:p.dot.y, max:p.dot.y )
         
@@ -420,8 +421,6 @@ protocol APChartViewDelegate {
                 offsetY.updateMinMax(curr.dot.y)
             }
         }
-        println("Offset X \(offsetX.min), \(offsetX.max) \(offsetX.delta()/10) ")
-        println("Offset Y \(offsetY.min), \(offsetY.max) \(offsetY.delta()/10) ")
         
         var x = offsetX.delta()/10
         offsetX.min -= x

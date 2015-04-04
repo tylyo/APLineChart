@@ -4,8 +4,8 @@ An iOS Line Chart v1.1.0
 It's a fully customizable Line chart using Interface Builder. I hope that it could be useful in your app.
 Any feedback are welcome
 
-![portrait image](https://raw.github.com/tylyo/APLineChart/master/portrait.png)
-![landscape image](https://raw.github.com/tylyo/APLineChart/master/landscape.png)
+![portrait image](https://raw.github.com/tylyo/APLineChart/master/images/portrait.png)
+![landscape image](https://raw.github.com/tylyo/APLineChart/master/images/landscape.png)
 
 ## Usage
 What you have to do is to include APChartView directory in your project.
@@ -31,8 +31,10 @@ line.addPoint( CGPoint(x: 21.0, y: 18.0y))
 chart.addLine(line)
 ```
 ## UI Customizations
+![Interface Builder UI](https://raw.github.com/tylyo/APLineChart/master/images/IBuilder.png)
 
-![controls](https://raw.github.com/tylyo/APLineChart/master/controls.png)
+
+![controls](https://raw.github.com/tylyo/APLineChart/master/images/controls.png)
 
 ## Customizations
 ```swift

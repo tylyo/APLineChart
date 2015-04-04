@@ -38,7 +38,7 @@ class APChartLine  {
     
     
     func addPoint(point:CGPoint) {
-        println("addPoint \(point)")
+
         var dot = APChartPoint(point)
         dot.chart = chart
         dot.color = lineColor
@@ -46,7 +46,7 @@ class APChartLine  {
         
     }
     func addPoint(point:CGPoint, extra:[String:AnyObject!]) {
-        println("addPoint \(point)")
+
         var dot = APChartPoint(point)
         dot.chart = chart
         dot.color = lineColor
@@ -68,12 +68,9 @@ class APChartLine  {
     }
     
     func drawLine() -> CAShapeLayer? {
-        //        let currentLine = linesDataStore[lineIndex]
-//         println("APChartLine.drawLine \(title) [\(dots.count)] \(lineWidth), p0:\(chart.pointZero)")
-        
 
         var bpath = UIBezierPath()
-        println("dot 0 : \(dots[0].point)")
+
         bpath.moveToPoint(CGPoint(x: dots[0].point.x, y: dots[0].point.y))
         
         for (index, dot) in enumerate(dots) {

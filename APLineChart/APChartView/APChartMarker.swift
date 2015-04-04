@@ -21,16 +21,16 @@ class APChartMarkerLine  {
     var title:String = "line"
     var lineColor:UIColor = UIColor.blackColor()
     var lineWidth:CGFloat = 1.0
-    init(chartView:APChartView, title:String, x:CGFloat, lineColor:UIColor) {
+    init(chartView:APChartView, title:String, x:CGFloat, lineColor:UIColor? =  UIColor.redColor()) {
         self.chart = chartView
         self.title = title
-        self.lineColor = lineColor
+        self.lineColor = lineColor!
         self.x = APMarker(value: x, point: x, pointEnd:x, label: title)
     }
-    init(chartView:APChartView, title:String, y:CGFloat, lineColor:UIColor) {
+    init(chartView:APChartView, title:String, y:CGFloat, lineColor:UIColor? =  UIColor.redColor()) {
         self.chart = chartView
         self.title = title
-        self.lineColor = lineColor
+        self.lineColor = lineColor!
         self.y = APMarker(value: y, point: y, pointEnd:y, label: title)
         
     }
@@ -52,9 +52,7 @@ class APChartMarkerLine  {
     
     func drawLine() -> CAShapeLayer? {
         //        let currentLine = linesDataStore[lineIndex]
-        
-        println("APChartMarkerLine.drawLine \(title) ")
-        
+                
         var bpath = UIBezierPath()
         
         var labelTitle:UILabel?
