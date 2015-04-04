@@ -4,6 +4,8 @@ An iOS Line Chart v1.1.0
 It's a fully customizable Line chart using Interface Builder. I hope that it could be useful in your app.
 Any feedback are welcome
 
+![portrait image](https://github.com/github/tylyo/APLineChart/master/portrait.png)
+
 ## Usage
 What you have to do is to include APChartView directory in your project.
 
