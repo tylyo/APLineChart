@@ -10,10 +10,22 @@ import UIKit
 
 extension CGFloat {
     func updatePointX(factor:CGFloat, _ offset:CGFloat) -> CGFloat {
-        return offset + self * factor
+        var newX = offset + self * factor
+        
+        if (newX.isNaN) {
+            newX = 0
+        }
+        
+        return newX
     }
     func updatePointY (factor:CGFloat, _ offset:CGFloat) -> CGFloat {
-        return offset - self * factor
+        var newY = offset - self * factor
+        
+        if (newY.isNaN) {
+            newY = 0
+        }
+        
+        return newY
     }
 }
 class APChartPoint {
