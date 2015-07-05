@@ -15,7 +15,7 @@ protocol APChartViewDelegate {
 }
 
 
-@IBDesignable class APChartView:UIView{
+@IBDesignable class APChartView:UIView,UIScrollViewDelegate{
     var collectionLines:[APChartLine] = []
     var collectionMarkers:[APChartMarkerLine] = []
     var delegate: APChartViewDelegate!
@@ -105,7 +105,6 @@ protocol APChartViewDelegate {
         
         self.addMarkerLine("x marker", x: 85.0 )
         self.addMarkerLine("y marker", y: 120.0 )
-        
         self.setNeedsDisplay()
     }
     
@@ -207,13 +206,13 @@ protocol APChartViewDelegate {
             
         }
         
-        if let markerLine = lineMax? {
+        if let markerLine = lineMax {
             if let layer = markerLine.drawLine() {
                 self.layer.addSublayer(layer)
                 self.lineLayerStore.append(layer)
             }
         }
-        if let markerLine = lineMin? {
+        if let markerLine = lineMin {
             if let layer = markerLine.drawLine() {
                 self.layer.addSublayer(layer)
                 self.lineLayerStore.append(layer)
@@ -558,10 +557,10 @@ protocol APChartViewDelegate {
     /**
     * Handle touch events.
     */
-    func handleTouchEvents(touches: NSSet!, event: UIEvent!) {
+    func handleTouchEvents(touches: Set<NSObject>, withEvent event: UIEvent) {
         if (self.collectionLines.isEmpty) { return }
         
-        var point: AnyObject! = touches.anyObject()
+        var point: AnyObject! = touches.first
         var selectedPoint = point.locationInView(self)
         
         var bpath = UIBezierPath()
@@ -588,15 +587,15 @@ protocol APChartViewDelegate {
     /**
     * Listen on touch end event.
     */
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        handleTouchEvents(touches, event: event)
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        handleTouchEvents(touches, withEvent: event)
     }
     
     /**
     * Listen on touch move event
     */
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-        handleTouchEvents(touches, event: event)
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+        handleTouchEvents(touches, withEvent: event)
     }
     
 }
