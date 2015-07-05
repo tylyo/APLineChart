@@ -1,8 +1,12 @@
 # APLineChart
 An iOS Line Chart v1.1.0
 
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L7GRLYEWFGSVE
+
 It's a fully customizable Line chart using Interface Builder. I hope that it could be useful in your app.
 Any feedback are welcome
+
+
 
 ![portrait image](https://raw.github.com/tylyo/APLineChart/master/images/portrait.png)
 ![landscape image](https://raw.github.com/tylyo/APLineChart/master/images/landscape.png)
