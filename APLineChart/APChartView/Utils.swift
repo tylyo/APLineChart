@@ -21,23 +21,23 @@ extension UIColor {
         return self
     }
     
-    class func fromHex(hex: Int) -> UIColor {
-        var red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
-        var green = CGFloat((hex & 0xFF00) >> 8) / 255.0
-        var blue = CGFloat((hex & 0xFF)) / 255.0
+    class func fromHex(_ hex: Int) -> UIColor {
+        let red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((hex & 0xFF00) >> 8) / 255.0
+        let blue = CGFloat((hex & 0xFF)) / 255.0
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
 }
 
 extension CGPoint {
-    func distanceFrom(toPoint:CGPoint) -> CGFloat {
-        var xDist2:CGFloat  = abs(self.x - toPoint.x)*abs(self.y - toPoint.y)
-        var yDist2:CGFloat = abs(self.y - toPoint.y)*abs(self.y - toPoint.y);
+    func distanceFrom(_ toPoint:CGPoint) -> CGFloat {
+        let xDist2:CGFloat  = abs(self.x - toPoint.x)*abs(self.y - toPoint.y)
+        let yDist2:CGFloat = abs(self.y - toPoint.y)*abs(self.y - toPoint.y);
         return sqrt( xDist2 + yDist2 );
     }
     
-    func distanceXFrom( toPoint:CGPoint) -> CGFloat {
-        var xDist2:CGFloat  = abs(self.x - toPoint.x)
+    func distanceXFrom( _ toPoint:CGPoint) -> CGFloat {
+        let xDist2:CGFloat  = abs(self.x - toPoint.x)
         return xDist2;
     }
 
@@ -45,12 +45,12 @@ extension CGPoint {
 
 
 extension Double {
-    func round2dec() -> Double {
-        return Double(round(self*100)/100)
+    mutating func round2dec() -> Double {
+        return Double(Darwin.round(self*100)/100)
     }
 }
 extension CGFloat {
-    func round2dec() -> CGFloat {
-        return CGFloat(round(self*100)/100)
+    mutating func round2dec() -> CGFloat {
+        return CGFloat(Darwin.round(self*100)/100)
     }
 }

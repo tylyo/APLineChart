@@ -9,7 +9,7 @@
 import UIKit
 
 extension CGFloat {
-    func updatePointX(factor:CGFloat, _ offset:CGFloat) -> CGFloat {
+    func updatePointX(_ factor:CGFloat, _ offset:CGFloat) -> CGFloat {
         var newX = offset + self * factor
         
         if (newX.isNaN) {
@@ -18,7 +18,7 @@ extension CGFloat {
         
         return newX
     }
-    func updatePointY (factor:CGFloat, _ offset:CGFloat) -> CGFloat {
+    func updatePointY (_ factor:CGFloat, _ offset:CGFloat) -> CGFloat {
         var newY = offset - self * factor
         
         if (newY.isNaN) {
@@ -31,10 +31,10 @@ extension CGFloat {
 class APChartPoint {
     var dot:CGPoint = CGPoint(x: 0.0, y: 0.0)
     var point:CGPoint = CGPoint(x:0.0, y:0.0)
-    var color:UIColor = UIColor.grayColor()
-    var backgroundColor:UIColor = UIColor.grayColor()
+    var color:UIColor = UIColor.gray
+    var backgroundColor:UIColor = UIColor.gray
     var chart:APChartView!
-    var extra:[String:AnyObject!] = [:]
+    var extra:[String:AnyObject?] = [:]
 
     var outerRadius: CGFloat = 12
     var innerRadius: CGFloat = 8
@@ -45,12 +45,12 @@ class APChartPoint {
         self.dot = dot
     }
     
-    required init(_ dot: CGPoint, extra:[String:AnyObject!]){
+    required init(_ dot: CGPoint, extra:[String:AnyObject?]){
         self.dot = dot
         self.extra = extra
     }
     
-    func updatePoint  (factor:CGPoint, offset:CGPoint ) -> APChartPoint{
+    func updatePoint  (_ factor:CGPoint, offset:CGPoint ) -> APChartPoint{
         
         self.point = CGPoint( x: dot.x.updatePointX(factor.x, offset.x) ,  y: dot.y.updatePointY(factor.y, offset.y))
         return self
@@ -60,32 +60,32 @@ class APChartPoint {
     /**
     * Draw dot at every data point.
     */
-    func drawDot(bgColor:UIColor) -> CALayer{
+    func drawDot(_ bgColor:UIColor) -> CALayer{
         
-        var xValue = point.x - outerRadius/2
-        var yValue = point.y - outerRadius/2
+        let xValue = point.x - outerRadius/2
+        let yValue = point.y - outerRadius/2
         
         // draw custom layer with another layer in the center
-        var dotLayer = CALayer()
-        dotLayer.backgroundColor = bgColor.CGColor
+        let dotLayer = CALayer()
+        dotLayer.backgroundColor = bgColor.cgColor
         dotLayer.cornerRadius = outerRadius / 2
         dotLayer.frame = CGRect(x: xValue, y: yValue, width: outerRadius, height: outerRadius)
         
-        var dotLayerInner = CALayer()
-        var inset = dotLayer.bounds.size.width - innerRadius
-        dotLayerInner.backgroundColor = color.CGColor
+        let dotLayerInner = CALayer()
+        let inset = dotLayer.bounds.size.width - innerRadius
+        dotLayerInner.backgroundColor = color.cgColor
         dotLayerInner.cornerRadius = innerRadius / 2
-        dotLayerInner.frame = CGRectInset(dotLayer.bounds, inset/2, inset/2)
+        dotLayerInner.frame = dotLayer.bounds.insetBy(dx: inset/2, dy: inset/2)
         
         
         dotLayer.addSublayer(dotLayerInner)
         
         // animate opacity
-        var animation = CABasicAnimation(keyPath: "opacity")
+        let animation = CABasicAnimation(keyPath: "opacity")
         animation.duration = 0.8
         animation.fromValue = 0
         animation.toValue = 1
-        dotLayer.addAnimation(animation, forKey: "opacity")
+        dotLayer.add(animation, forKey: "opacity")
         
         return dotLayer
     }
