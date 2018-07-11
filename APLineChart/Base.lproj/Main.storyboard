@@ -39,7 +39,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P3i-bM-XcV" customClass="APChartView" customModule="APLineChart" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="167" width="375" height="611"/>
+                                <rect key="frame" x="0.0" y="137" width="375" height="641"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showAxes" value="YES"/>
@@ -62,20 +62,15 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showMin" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCK-EL-8dH">
-                                <rect key="frame" x="16" y="72" width="491" height="63"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="63" id="dCc-Bu-RjF"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCK-EL-8dH">
+                                <rect key="frame" x="16" y="96" width="42" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D1D-3S-ci2">
-                                <rect key="frame" x="515" y="89" width="53" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="53" id="agE-M5-kY3"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D1D-3S-ci2">
+                                <rect key="frame" x="66" y="96" width="309" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Refresh">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -86,15 +81,16 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="D1D-3S-ci2" secondAttribute="trailing" constant="16" id="2k3-34-sab"/>
-                            <constraint firstItem="D1D-3S-ci2" firstAttribute="leading" secondItem="eCK-EL-8dH" secondAttribute="trailing" constant="8" symbolic="YES" id="G8u-20-Z14"/>
+                            <constraint firstItem="D1D-3S-ci2" firstAttribute="leading" secondItem="eCK-EL-8dH" secondAttribute="trailing" constant="8" symbolic="YES" id="2uh-l4-YwV"/>
+                            <constraint firstItem="D1D-3S-ci2" firstAttribute="trailing" secondItem="P3i-bM-XcV" secondAttribute="trailing" id="Buw-kG-OhM"/>
                             <constraint firstItem="eCK-EL-8dH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="H52-S5-S1U"/>
                             <constraint firstItem="eCK-EL-8dH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="OBE-xj-76D"/>
-                            <constraint firstItem="P3i-bM-XcV" firstAttribute="top" secondItem="D1D-3S-ci2" secondAttribute="bottom" constant="24" id="QNT-Hc-4d5"/>
                             <constraint firstItem="P3i-bM-XcV" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="Uza-Pw-tVQ"/>
                             <constraint firstItem="P3i-bM-XcV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="XRa-Vv-cls"/>
+                            <constraint firstItem="D1D-3S-ci2" firstAttribute="top" secondItem="eCK-EL-8dH" secondAttribute="top" id="luq-Zh-0a6"/>
                             <constraint firstItem="P3i-bM-XcV" firstAttribute="top" secondItem="eCK-EL-8dH" secondAttribute="bottom" constant="8" symbolic="YES" id="mCM-TR-TZm"/>
                             <constraint firstAttribute="trailing" secondItem="P3i-bM-XcV" secondAttribute="trailing" id="t44-7r-h3a"/>
+                            <constraint firstItem="P3i-bM-XcV" firstAttribute="top" secondItem="D1D-3S-ci2" secondAttribute="bottom" constant="8" symbolic="YES" id="u8V-bF-xxI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="APLineChart" id="HGp-y8-hnQ"/>
