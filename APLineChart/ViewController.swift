@@ -23,9 +23,9 @@ class ViewController: UIViewController,APChartViewDelegate {
 
     @IBAction func createLine(){
         chart.collectionLines = []
-        var line = APChartLine(chartView: chart, title: "prova", lineWidth: 2.0, lineColor: UIColor.purpleColor())
+        let line = APChartLine(chartView: chart, title: "prova", lineWidth: 2.0, lineColor: UIColor.purple)
         var x:CGFloat = 1
-        for i:Int in 0...20{
+        for _:Int in 0...20{
             x = x+1 + CGFloat(arc4random_uniform(10))
             line.addPoint( CGPoint(x: x, y: CGFloat(35 + arc4random_uniform(200))))
             
@@ -40,14 +40,14 @@ class ViewController: UIViewController,APChartViewDelegate {
 
     }
 
-    func didSelectNearDataPoint(selectedDots: [String : APChartPoint]) {
+    func didSelectNearDataPoint(_ selectedDots: [String : APChartPoint]) {
         var txt = ""
         for (title,value) in selectedDots {
             txt = "\(txt)\(title): \(value.dot)\n"
         }
         lblPoint.text = txt
     }
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         if let chartV = chart {
             chartV.setNeedsDisplay()
         }

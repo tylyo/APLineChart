@@ -19,15 +19,15 @@ class APChartMarkerLine  {
     var x:APMarker?
     var y:APMarker?
     var title:String = "line"
-    var lineColor:UIColor = UIColor.blackColor()
+    var lineColor:UIColor = UIColor.black
     var lineWidth:CGFloat = 1.0
-    init(chartView:APChartView, title:String, x:CGFloat, lineColor:UIColor? =  UIColor.redColor()) {
+    init(chartView:APChartView, title:String, x:CGFloat, lineColor:UIColor? =  UIColor.red) {
         self.chart = chartView
         self.title = title
         self.lineColor = lineColor!
         self.x = APMarker(value: x, point: x, pointEnd:x, label: title)
     }
-    init(chartView:APChartView, title:String, y:CGFloat, lineColor:UIColor? =  UIColor.redColor()) {
+    init(chartView:APChartView, title:String, y:CGFloat, lineColor:UIColor? =  UIColor.red) {
         self.chart = chartView
         self.title = title
         self.lineColor = lineColor!
@@ -35,14 +35,14 @@ class APChartMarkerLine  {
         
     }
     
-    func updatePoints(factorPoint:CGPoint, offset:CGPoint){
+    func updatePoints(_ factorPoint:CGPoint, offset:CGPoint){
         
-        if var x_marker = x {
+        if let x_marker = x {
             x?.point = x_marker.value.updatePointX(factorPoint.x, offset.x)
             return
         }
         
-        if var y_marker = y {
+        if let y_marker = y {
             y?.point = y_marker.value.updatePointY(factorPoint.y, offset.y)
             return
         }
@@ -53,63 +53,63 @@ class APChartMarkerLine  {
     func drawLine() -> CAShapeLayer? {
         //        let currentLine = linesDataStore[lineIndex]
                 
-        var bpath = UIBezierPath()
+        let bpath = UIBezierPath()
         
         var labelTitle:UILabel?
         var labelValue:UILabel?
-        if var x_marker = x
+        if let x_marker = x
         {
             labelTitle = UILabel(frame: CGRect(origin: CGPoint(x: x_marker.point-8.0, y: chart.pointZero.y-chart.drawingArea.height), size: chart.labelAxesSize))
-            labelTitle?.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI)/2)
+            labelTitle?.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
             labelValue = UILabel(frame: CGRect(origin: CGPoint(x: x_marker.point-24.0, y: chart.pointZero.y-chart.drawingArea.height), size: chart.labelAxesSize))
-            labelValue?.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI)/2)
+            labelValue?.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
             labelValue?.text = "\(x_marker.value)"
             
-            bpath.moveToPoint(CGPoint(x: x_marker.point, y: chart.pointZero.y))
-            bpath.addLineToPoint(CGPoint(x: x_marker.point, y: chart.pointZero.y-chart.drawingArea.height))
+            bpath.move(to: CGPoint(x: x_marker.point, y: chart.pointZero.y))
+            bpath.addLine(to: CGPoint(x: x_marker.point, y: chart.pointZero.y-chart.drawingArea.height))
             
         }
         
-        if var y_marker = y
+        if let y_marker = y
         {
             labelTitle = UILabel(frame: CGRect(origin: CGPoint(x: chart.pointZero.x+chart.drawingArea.width-chart.labelAxesSize.width, y: y_marker.point), size: chart.labelAxesSize))
             labelValue = UILabel(frame: CGRect(origin: CGPoint(x: chart.pointZero.x+chart.drawingArea.width-chart.labelAxesSize.width, y: y_marker.point-16), size: chart.labelAxesSize))
             labelValue?.text = "\(y_marker.value)"
-            bpath.moveToPoint(CGPoint(x: chart.pointZero.x, y: y_marker.point))
-            bpath.addLineToPoint(CGPoint(x: chart.pointZero.x+chart.drawingArea.width, y: y_marker.point))
+            bpath.move(to: CGPoint(x: chart.pointZero.x, y: y_marker.point))
+            bpath.addLine(to: CGPoint(x: chart.pointZero.x+chart.drawingArea.width, y: y_marker.point))
         }
         
         
-        labelTitle?.font = UIFont.italicSystemFontOfSize(10.0)
-        labelTitle?.textAlignment = .Right
+        labelTitle?.font = UIFont.italicSystemFont(ofSize: 10.0)
+        labelTitle?.textAlignment = .right
         labelTitle?.text = "\(title)"
         labelTitle?.sizeToFit()
         labelTitle?.textColor = lineColor
         chart.addSubview(labelTitle!)
-        labelValue?.font = UIFont.italicSystemFontOfSize(10.0)
-        labelValue?.textAlignment = .Right
+        labelValue?.font = UIFont.italicSystemFont(ofSize: 10.0)
+        labelValue?.textAlignment = .right
         labelValue?.sizeToFit()
         labelValue?.textColor = lineColor
         chart.addSubview(labelValue!)
         
         
-        UIColor.clearColor().setStroke()
-        bpath.lineCapStyle = kCGLineCapRound
+        UIColor.clear.setStroke()
+        bpath.lineCapStyle = CGLineCap.round
         bpath.stroke()
         //
-        var layer = CAShapeLayer()
+        let layer = CAShapeLayer()
         layer.frame = self.chart.bounds
-        layer.path = bpath.CGPath
-        layer.strokeColor = lineColor.CGColor //colors[lineIndex].CGColor
+        layer.path = bpath.cgPath
+        layer.strokeColor = lineColor.cgColor //colors[lineIndex].CGColor
         layer.fillColor = nil
         layer.lineWidth = lineWidth
         layer.lineDashPattern = [6,2]
         
-        var animation = CABasicAnimation(keyPath: "strokeEnd")
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = 1.0
         animation.fromValue = 0
         animation.toValue = 1
-        layer.addAnimation(animation, forKey: "strokeEnd")
+        layer.add(animation, forKey: "strokeEnd")
         
         
         
