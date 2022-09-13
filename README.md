@@ -1,7 +1,9 @@
 # APLineChart
 An iOS Line Chart v1.1.0
 # APLineChart
-An iOS Line Chart v1.1.1
+An iOS Line Chart v1.1.
+An iOS Line Chart v1.1.2
+
 
 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L7GRLYEWFGSVE
 
